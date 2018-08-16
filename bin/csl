@@ -1,6 +1,17 @@
 #!/usr/bin/php
 <?php
-include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+$ds = DIRECTORY_SEPARATOR;
+$files = [
+    __DIR__ . $ds . '..' . $ds . 'vendor' . $ds . 'autoload.php',
+    __DIR__ . $ds . '..' . $ds . '..' . $ds . '..' . $ds . 'autoload.php'
+];
+
+foreach ($files as $file) {
+    if (\file_exists($file)) {
+        require $file;
+    }
+
+}
 $application = new \Symfony\Component\Console\Application('Mayesto CSL', "1.0");
 $application->add(new \Mayesto\CSL\Command\Check());
 $application->run();
