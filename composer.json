@@ -1,0 +1,27 @@
+{
+  "name": "mayesto/csl",
+  "license": "MIT",
+  "description": "Check files",
+  "type": "package",
+  "require": {
+    "php": ">7.0",
+    "symfony/console": "^4.1",
+    "nikic/php-parser": "^4.0",
+    "symfony/config": "^4.1",
+    "symfony/yaml": "^4.1",
+    "psr/log": "^1.0",
+    "league/pipeline": "^1.0",
+    "monolog/monolog": "^1.23"
+  },
+  "authors": [
+    {
+      "name": "Michał Rogala",
+      "email": "m@rogala.net.pl"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Mayesto\\CSL\\": "./src"
+    }
+  }
+}

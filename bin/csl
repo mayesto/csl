@@ -1,0 +1,12 @@
+#!/usr/bin/php
+<?php
+include __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+$application = new \Symfony\Component\Console\Application('Mayesto CSL', "1.0");
+$application->add(new \Mayesto\CSL\Command\Check());
+$application->run();
+
+
+/*
+ * @todo konfiguracja uruchomienia w pliku
+ *
+ */
