@@ -11,7 +11,7 @@ This pack was designed for more accurate checking of files
 ### Usage
 
 #### Check command
-`./bin/csl csl:check ./src --yaml=./config.yml`
+`csl check ./src --yaml=./config.yml`
 
 ##### RunOptions: 
 
