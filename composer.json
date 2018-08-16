@@ -23,5 +23,8 @@
     "psr-4": {
       "Mayesto\\CSL\\": "./src"
     }
-  }
+  },
+  "bin": [
+    "bin/csl"
+  ]
 }

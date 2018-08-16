@@ -6,10 +6,12 @@ This pack was designed for more accurate checking of files
 
 `composer global require mayesto/csl`
 
+`ln -s ~/.composer/vendor/bin/csl /usr/bin`
+
 ### Usage
 
 #### Check command
-`./bin/csl csl:check ./src --yaml=./config.yml`
+`csl check ./src --yaml=./config.yml`
 
 ##### RunOptions: 
 
