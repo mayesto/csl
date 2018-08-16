@@ -5,6 +5,7 @@ This pack was designed for more accurate checking of files
 ### Install
 
 `composer global require mayesto/csl`
+`ln -s ~/.composer/vendor/bin/csl /usr/bin`
 
 ### Usage
 
