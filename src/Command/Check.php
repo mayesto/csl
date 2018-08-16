@@ -31,7 +31,7 @@ class Check extends Command
 
     public function configure(): void
     {
-        $this->setName('csl:check')
+        $this->setName('check')
              ->addArgument('path', InputArgument::REQUIRED, 'Path do directory to scan')
              ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format [table|json]', 'table')
              ->addOption('yaml', null, InputOption::VALUE_REQUIRED, 'Path to yaml file with config');
