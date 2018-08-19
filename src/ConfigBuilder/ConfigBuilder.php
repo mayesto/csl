@@ -38,7 +38,7 @@ class ConfigBuilder
                     $hasConstructor ? $refClass->getConstructor()->getParameters() : []
                 );
                 if ($hasConstructor && $constructorHasParameters && \is_object($options)) {
-                    $rule = $refClass->newInstance(...\array_values($options->arguments));
+                    $rule = $refClass->newInstance(...\array_values($options->arguments ?? []));
                 } else {
                     $rule = $refClass->newInstance();
                 }
