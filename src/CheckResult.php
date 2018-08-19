@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL;
 
 /**
@@ -46,6 +45,14 @@ class CheckResult implements \JsonSerializable
      * which is a value of any type other than a resource.
      */
     public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
     {
         return [
             "messages" => $this->messages

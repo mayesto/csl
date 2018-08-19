@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL;
 
 /**
@@ -28,4 +27,14 @@ interface OutputMessage
      * @return string
      */
     public function getMessageContent(): string;
+
+    /**
+     * @return string
+     */
+    public static function getTypeString(): string;
+
+    /**
+     * @return array
+     */
+    public function toArray(): array;
 }

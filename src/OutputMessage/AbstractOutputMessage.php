@@ -1,16 +1,16 @@
 <?php
 
-
 namespace Mayesto\CSL\OutputMessage;
 
 use Mayesto\CSL\File;
+use Mayesto\CSL\OutputMessage;
 use Mayesto\CSL\RuleInterface;
 
 /**
  * @author Mayesto <m@mayesto.pl>
  *
  */
-abstract class AbstractOutputMessage implements \JsonSerializable
+abstract class AbstractOutputMessage implements \JsonSerializable, OutputMessage
 {
     /**
      * @var \Mayesto\CSL\RuleInterface
@@ -79,11 +79,20 @@ abstract class AbstractOutputMessage implements \JsonSerializable
 
     public function jsonSerialize(): array
     {
+        return $this->toArray();
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray(): array
+    {
         return [
             'rule' => \get_class($this->rule),
             'file' => $this->file->getPath(),
             'line' => $this->line,
-            'content' => $this->messageContent
+            'content' => $this->messageContent,
+            'type' => $this->getTypeString()
         ];
     }
 }
