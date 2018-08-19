@@ -35,6 +35,7 @@ This pack was designed for more accurate checking of files
 - InternalFunctionNamespace - Find all call of native functions and check if they have fully namespace
 - MethodReturnTypeRequire - Find all methods which have not return type cast
 - ParserValidation - Basic parser validation
+- EmptyLineOnEndOfFile - Check if file has empty line on end of file
 
 
 ### Config file
@@ -64,6 +65,8 @@ rules: # Array of rules
 
   Mayesto\CSL\Rule\ClassMethodPhpDocEmptyLineBeforeReturn:
 
+  Mayesto\CSL\Rule\EmptyLineOnEndOfFile:
+  
   TestRule:
     file: /home/user/TestRule.php # Class which implements RuleInterface
 
