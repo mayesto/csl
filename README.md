@@ -17,6 +17,7 @@ This pack was designed for more accurate checking of files
 
     --format=value      Output format. Possible values: table, json
     --yaml=filepath     Select config file in yaml format
+    -s|--short          Short file path on result
     -vvv                Debug mode
 
 ### Features
@@ -35,6 +36,8 @@ This pack was designed for more accurate checking of files
 - InternalFunctionNamespace - Find all call of native functions and check if they have fully namespace
 - MethodReturnTypeRequire - Find all methods which have not return type cast
 - ParserValidation - Basic parser validation
+- TooMuchEmptyLines - Scan file and report too much empty lines
+- EmptyLineOnEndOfFile - Check if file has empty line on end of file
 
 
 ### Config file
@@ -62,8 +65,14 @@ rules: # Array of rules
 
   Mayesto\CSL\Rule\ClassAuthorRequire:
 
+  Mayesto\CSL\Rule\TooMuchEmptyLines:
+    arguments:
+      - 2 # Number of empty lines generating an error. Default: 2
+      
   Mayesto\CSL\Rule\ClassMethodPhpDocEmptyLineBeforeReturn:
 
+  Mayesto\CSL\Rule\EmptyLineOnEndOfFile:
+  
   TestRule:
     file: /home/user/TestRule.php # Class which implements RuleInterface
 

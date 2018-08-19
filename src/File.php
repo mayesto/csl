@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL;
 
 use Mayesto\CSL\Exception\FileException;
@@ -63,7 +62,7 @@ class File
         $f = \fopen($this->path, 'r');
 
         $i = 0;
-        while ($line = \fgetc($f)) {
+        while ($line = \fgets($f)) {
             $i++;
             yield new Line($this->path, $line, $i);
         }
