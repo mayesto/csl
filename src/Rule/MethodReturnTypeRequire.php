@@ -16,7 +16,7 @@ use PhpParser;
  */
 class MethodReturnTypeRequire implements RuleInterface
 {
-    private $excludedMethods = ['__construct'];
+    private $excludedMethods = ['__construct', '__destruct'];
 
     /**
      * @param \Mayesto\CSL\File $file
@@ -38,7 +38,7 @@ class MethodReturnTypeRequire implements RuleInterface
                     if (\in_array((string)$method->name, $this->excludedMethods)) {
                         continue;
                     }
-                    if (\is_null($method->getReturnType())) {
+                    if (\is_null($method->getReturnType()) && !$this->hasAmbiguousReturnInPhpDoc($method)) {
                         yield new Warning(
                             $this,
                             $file,
@@ -51,5 +51,27 @@ class MethodReturnTypeRequire implements RuleInterface
         } catch (PhpParser\Error $error) {
             yield new Error($this, $file, $error->getLine(), $error->getMessage());
         }
+    }
+
+    private function hasAmbiguousReturnInPhpDoc(PhpParser\Node\Stmt\ClassMethod $method): bool
+    {
+        $ambigous = ["mixed", "resource"];
+        $hasDoc = !\is_null($method->getDocComment());
+        if (!$hasDoc) {
+            return false;
+        }
+        if (\preg_match("#@return (.*?)\n#", $method->getDocComment(), $matches)) {
+            $returnValue = \explode("|", $matches[1]);
+            $count = \count($returnValue);
+            if ($count === 0) {
+                return false;
+            } elseif ($count === 1) {
+                return \in_array($returnValue[0], $ambigous);
+            } else {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
