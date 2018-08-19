@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL;
 
 use Psr\Log\LoggerAwareInterface;

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL\Exception;
 
 /**

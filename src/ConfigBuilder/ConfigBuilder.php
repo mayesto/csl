@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL\ConfigBuilder;
 
 use Mayesto\CSL\CheckConfig;

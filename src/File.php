@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL;
 
 use Mayesto\CSL\Exception\FileException;
