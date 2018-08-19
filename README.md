@@ -52,8 +52,6 @@ rules: # Array of rules
     arguments:
       - '.*?<name@example.com>'
 
-  Mayesto\CSL\Rule\ParserValidation:
-
   Mayesto\CSL\Rule\InternalFunctionNamespace:
 
   Mayesto\CSL\Rule\ClassPhpDoc:
