@@ -35,6 +35,7 @@ This pack was designed for more accurate checking of files
 - InternalFunctionNamespace - Find all call of native functions and check if they have fully namespace
 - MethodReturnTypeRequire - Find all methods which have not return type cast
 - ParserValidation - Basic parser validation
+- TooMuchEmptyLines - Scan file and report too much empty lines
 
 
 ### Config file
@@ -62,6 +63,10 @@ rules: # Array of rules
 
   Mayesto\CSL\Rule\ClassAuthorRequire:
 
+  Mayesto\CSL\Rule\TooMuchEmptyLines:
+    arguments:
+      - 2 # Number of empty lines generating an error. Default: 2
+      
   Mayesto\CSL\Rule\ClassMethodPhpDocEmptyLineBeforeReturn:
 
   TestRule:
