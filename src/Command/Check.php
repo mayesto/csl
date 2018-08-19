@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Mayesto\CSL\Command;
 
 use Mayesto\CSL\CheckConfig;
@@ -34,7 +33,8 @@ class Check extends Command
         $this->setName('check')
              ->addArgument('path', InputArgument::REQUIRED, 'Path do directory to scan')
              ->addOption('format', 'f', InputOption::VALUE_REQUIRED, 'Output format [table|json]', 'table')
-             ->addOption('yaml', null, InputOption::VALUE_REQUIRED, 'Path to yaml file with config');
+             ->addOption('yaml', null, InputOption::VALUE_REQUIRED, 'Path to yaml file with config')
+             ->addOption('short', 's', InputOption::VALUE_NONE, 'Short file path');
     }
 
     public function initialize(InputInterface $input, OutputInterface $output): void
@@ -82,10 +82,10 @@ class Check extends Command
 
             switch ($input->getOption('format')) {
                 case 'table':
-                    $this->renderTable($output, $result);
+                    $this->renderTable($output, $this->getResultArray($input, $result));
                     break;
                 case 'json':
-                    $this->renderJson($output, $result);
+                    $this->renderJson($output, $this->getResultArray($input, $result));
                     break;
                 default:
                     throw new \RuntimeException('Invalid output format option');
@@ -99,28 +99,12 @@ class Check extends Command
         }
     }
 
-    /**
-     * @param \Mayesto\CSL\OutputMessage $message
-     *
-     * @return array
-     */
-    protected function getRowCells(OutputMessage $message): array
+    private function decorate(array $message, $value): string
     {
-        return [
-            $this->decorate($message, $this->getTypeString($message)),
-            $this->decorate($message, \get_class($message->getRule())),
-            $this->decorate($message, $message->getFile()->getPath()),
-            $this->decorate($message, $message->getLine()),
-            $this->decorate($message, $message->getMessageContent())
-        ];
-    }
-
-    private function decorate(OutputMessage $message, $value): string
-    {
-        switch (true) {
-            case $message instanceof OutputMessage\Error:
+        switch ($message['type']) {
+            case OutputMessage\Error::getTypeString() :
                 return "<error>{$value}</error>";
-            case $message instanceof OutputMessage\Warning:
+            case OutputMessage\Warning::getTypeString() :
                 return "<comment>{$value}</comment>";
             default:
                 return $value;
@@ -128,39 +112,54 @@ class Check extends Command
     }
 
     /**
-     * @param \Mayesto\CSL\OutputMessage $message
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Mayesto\CSL\CheckResult $result
      *
-     * @throws
-     * @return string
+     * @return array
      */
-    private function getTypeString(OutputMessage $message): string
+    private function getResultArray(InputInterface $input, CheckResult $result): array
     {
-        switch (true) {
-            case $message instanceof OutputMessage\Error:
-                return "ERROR";
-            case $message instanceof OutputMessage\Warning:
-                return "WARNING";
-            default:
-                return "UNKNOWN";
-        }
+        $isShort = $input->getOption('short');
+        $path = $input->getArgument('path');
+
+        return [
+            'messages' => \array_map(
+                function (OutputMessage $message) use ($isShort, $path) {
+                    $array = $message->toArray();
+                    if ($isShort) {
+                        $array['file'] = \str_replace($path, '', $array['file']);
+                    }
+
+                    return $array;
+                },
+                \iterator_to_array($result->getMessage())
+            )
+        ];
     }
 
     /**
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Mayesto\CSL\CheckResult $result
+     * @param array $result
      */
-    private function renderTable(OutputInterface $output, CheckResult $result): void
+    private function renderTable(OutputInterface $output, array $result): void
     {
         $messagesTable = new Table($output);
-        $messagesTable->setHeaders(['Type', 'Rule', 'File', 'Line', 'Message']);
+        $messagesTable->setHeaders(['Type', 'Rule', 'File', 'Message']);
         $stats = [];
-        foreach ($result->getMessage() as $message) {
-            $type = $this->getTypeString($message);
+        foreach ($result['messages'] as $message) {
+            $type = $message['type'];
             if (!isset($stats[$type])) {
                 $stats[$type] = 0;
             }
             $stats[$type]++;
-            $messagesTable->addRow($this->getRowCells($message));
+            $messagesTable->addRow(
+                [
+                    $this->decorate($message, $message['type']),
+                    $this->decorate($message, $message['rule']),
+                    $this->decorate($message, $message['file'] . ':' . $message['line']),
+                    $this->decorate($message, $message['content'])
+                ]
+            );
         }
 
         $messagesTable->render();
@@ -168,9 +167,9 @@ class Check extends Command
 
     /**
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     * @param \Mayesto\CSL\CheckResult $result
+     * @param array $result
      */
-    private function renderJson(OutputInterface $output, CheckResult $result): void
+    private function renderJson(OutputInterface $output, array $result): void
     {
         $output->write(\json_encode($result));
     }

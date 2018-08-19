@@ -17,6 +17,7 @@ This pack was designed for more accurate checking of files
 
     --format=value      Output format. Possible values: table, json
     --yaml=filepath     Select config file in yaml format
+    -s|--short          Short file path on result
     -vvv                Debug mode
 
 ### Features
