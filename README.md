@@ -1,5 +1,7 @@
 ## Mayesto CSL
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/51e4d7811c1a44f2b99a59482f7e8e61)](https://app.codacy.com/app/mayesto/csl?utm_source=github.com&utm_medium=referral&utm_content=mayesto/csl&utm_campaign=Badge_Grade_Dashboard)
+
 This pack was designed for more accurate checking of files
 
 ### Install
